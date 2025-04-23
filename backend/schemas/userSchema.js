@@ -3,7 +3,13 @@ import Joi from "joi";
 export const userCreateSchema = Joi.object({
   username: Joi.string().alphanum().min(8).required(),
   name: Joi.string().min(2).required(),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")).required(),
+  password: Joi.string()
+    .pattern(
+      new RegExp(
+        "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]{3,30}$"
+      )
+    )
+    .required(),
   email: Joi.string().email().required(),
   resume: Joi.string().uri().trim().required(),
   bio: Joi.string().min(10).max(1000).required(),

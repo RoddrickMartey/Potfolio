@@ -9,8 +9,8 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/user", userRouter);
-app.use("/visitor", visitorRouter);
+app.use("/api/user", userRouter);
+app.use("/api/visitor", visitorRouter);
 
 // Simple route for testing
 app.get("/", (req, res) => {
