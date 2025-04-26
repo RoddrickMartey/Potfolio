@@ -22,8 +22,7 @@ export const getAboutPage = async (req, res) => {
       select: {
         name: true,
         bio: true,
-
-        skills: true,
+        skills: { select: { skill: true } },
       },
     }); // assuming single user system
     return res.status(200).json(user);

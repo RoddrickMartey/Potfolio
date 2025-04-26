@@ -52,39 +52,39 @@ router.use(validateToken);
 
 // Basic Info Route
 router.get("/me", getMe);
-router.put("/update", updateUser);
+router.patch("/update", updateUser);
 
 // Phone Number Route
 router.post("/addPhoneNumber", addPhoneNumber);
-router.put("/updatePhoneNumber/:id", updatePhoneNumber);
+router.patch("/updatePhoneNumber/:id", updatePhoneNumber);
 router.delete("/deletePhoneNumber/:id", deletePhoneNumber);
 
 // Project Route
-router.get("/allProject", getAllProjects);
+router.get("/projects", getAllProjects);
 router.get("/project/:id", getProjectById);
 router.post("/addProject", createProject);
-router.put("/updateProject/:id", updateProject);
+router.patch("/updateProject/:id", updateProject);
 router.delete("/deleteProject/:id", deleteProject);
 
 // SocialLink Route
 router.get("/getSocial", getAllSocialLinks);
 router.post("/addSocial", addSocialLink);
-router.put("/updateSocial/:id", updateSocialLink);
+router.patch("/updateSocial/:id", updateSocialLink);
 router.delete("/deleteSocial/:id", deleteSocialLink);
 
 // TechStack Route
 router.post("/createTechStack/:projectId", addTechStack);
-router.put("/updateTechStack/:techStackId", updateTechStack);
+router.patch("/updateTechStack/:techStackId", updateTechStack);
 router.delete("/deleteTechStack/:techStackId", deleteTechStack);
 
 // Skill Route
 router.post("/addSkill", addSkill);
-router.put("/updateSkill/:id", updateSkill);
+router.patch("/updateSkill/:id", updateSkill);
 router.delete("/deleteSkill/:id", deleteSkill);
 
 // Screenshot Route
 router.post("/addScreenshot/:projectId", addScreenshot);
-router.put("/updateScreenshot/:screenshotId", updateScreenshot);
+router.patch("/updateScreenshot/:screenshotId", updateScreenshot);
 router.delete("/deleteScreenshot/:screenshotId", deleteScreenshot);
 
 // Comment Route

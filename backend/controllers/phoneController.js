@@ -23,7 +23,6 @@ export const addPhoneNumber = async (req, res) => {
       select: {
         id: true,
         number: true,
-        type: true,
         createdAt: true,
       },
     });
@@ -66,7 +65,6 @@ export const updatePhoneNumber = async (req, res) => {
       select: {
         id: true,
         number: true,
-        type: true,
         updatedAt: true,
       },
     });

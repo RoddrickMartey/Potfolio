@@ -70,7 +70,7 @@ model TechStack {
 // Define the data model for the PhoneNumber
 model PhoneNumber {
   id        Int      @id @default(autoincrement())
-  number    Int      @unique
+  number    String      @unique
   userId    Int
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())

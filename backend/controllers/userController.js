@@ -16,8 +16,14 @@ export const createUser = async (req, res) => {
   }
 
   try {
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(value.password, 10); // saltRounds = 10
+
     const newUser = await prisma.user.create({
-      data: value,
+      data: {
+        ...value,
+        password: hashedPassword, // save hashed password instead
+      },
       select: {
         username: true,
         name: true,
@@ -74,11 +80,10 @@ export const getMe = async (req, res) => {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: Number(userId) },
       select: {
-        id: true,
-        name: true,
         username: true,
+        name: true,
         email: true,
         resume: true,
         bio: true,
@@ -112,11 +117,12 @@ export const login = async (req, res) => {
   try {
     const user = await prisma.user.findUnique({ where: { id: USERID } });
     if (!user || user.username !== username) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid credentials user" });
     }
 
     const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(401).json({ error: "Invalid credentials" });
+    if (!valid)
+      return res.status(401).json({ error: "Invalid credentials password" });
 
     const token = jwt.sign({ id: user.id, role: "admin" }, JWT_SECRET, {
       expiresIn: "1d",
@@ -130,7 +136,7 @@ export const login = async (req, res) => {
       })
       .json({ message: "Login successful" });
   } catch (err) {
-    res.status(500).json({ error: "Server Error" });
+    res.status(500).json({ error: "Server Error, Something Happens" });
   }
 };
 

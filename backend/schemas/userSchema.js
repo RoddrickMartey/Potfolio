@@ -31,7 +31,7 @@ export const socialLinkSchema = Joi.object({
 });
 
 export const phoneNumberSchema = Joi.object({
-  number: Joi.number().positive().required(),
+  number: Joi.string().min(10).max(20).required(),
 });
 
 export const skillSchema = Joi.object({
