@@ -38,8 +38,8 @@ export const getContactPage = async (req, res) => {
       where: { id: USERID },
       select: {
         name: true,
-        phoneNumbers: true,
-        socialLinks: true,
+        phoneNumbers: { select: { number: true } },
+        socialLinks: { select: { platform: true, url: true } },
         email: true,
       },
     }); // assuming single user system

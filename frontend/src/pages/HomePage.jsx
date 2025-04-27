@@ -3,11 +3,12 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { OrbitProgress } from "react-loading-indicators";
 import axiosInstance from "../app/axiosConfig";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { IoLogoJavascript } from "react-icons/io5";
 import { FaReact } from "react-icons/fa6";
 import { SiExpress } from "react-icons/si";
 import { FaLaptopCode } from "react-icons/fa";
+import { SiMysql, SiPrisma } from "react-icons/si";
 
 function HomePage() {
   const { data, error, isPending } = useQuery({
@@ -49,7 +50,7 @@ function HomePage() {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.3, ease: "easeOut" }}
-        className="flex w-[900px] items-center rounded-lg justify-between bg-white p-10 shadow-[7px_7px_0px_#000000]"
+        className="flex w-[900px] items-center rounded-lg justify-between bg-white p-10 shadow-[4px_4px_0px_#000000] border-4 "
       >
         {/* Left side: Text */}
         <motion.div
@@ -97,6 +98,14 @@ function HomePage() {
                 icon: <FaLaptopCode size={40} className="text-black" />,
                 delay: 1.0,
               },
+              {
+                icon: <SiMysql size={40} className="text-black" />,
+                delay: 1.2,
+              },
+              {
+                icon: <SiPrisma size={40} className="text-black" />,
+                delay: 1.4,
+              },
             ].map((item, index) => (
               <motion.div
                 key={index}
@@ -123,10 +132,10 @@ function HomePage() {
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8, duration: 0.4, ease: "easeInOut" }}
-          className="w-[300px] h-[300px] overflow-hidden flex items-center justify-center "
+          className="w-[300px] h-[300px] overflow-hidden flex items-center justify-center rounded-md shadow-[3px_3px_0px_#6e11b0] border-2 border-purple-800"
         >
           <img
-            src="https://res.cloudinary.com/dd4bv2upq/image/upload/v1738602037/docs/models.jpg"
+            src="https://res.cloudinary.com/dd4bv2upq/image/upload/v1745709972/portfolio_pic_zqq1ra.jpg"
             alt="My picture"
             className="w-full h-full object-cover"
           />

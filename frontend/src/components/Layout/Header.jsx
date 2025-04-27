@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import { useLocation, useNavigate } from "react-router";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 function Header() {
   const location = useLocation();
@@ -12,13 +12,15 @@ function Header() {
     { name: "about", path: "/about", header: "Wanna know more about me?" },
     {
       name: "projects",
-      path: "/project",
+      path: "/projects",
       header: "Check out what I’ve built!",
     },
     { name: "contacts", path: "/contact", header: "Let’s have a chat!" },
   ];
 
-  const currentPage = pages.find((page) => page.path === location.pathname);
+  const currentPage = pages.find((page) =>
+    location.pathname.startsWith(page.path)
+  );
 
   return (
     <div className="h-16 flex items-center justify-between px-6 ">
@@ -32,7 +34,11 @@ function Header() {
       {/* Navigation Buttons */}
       <div className="flex space-x-4">
         {pages.map((page) => {
-          const isActive = page.path === currentPage.path;
+          const isActive =
+            page.path === "/"
+              ? location.pathname === "/"
+              : location.pathname.startsWith(page.path);
+
           return (
             <motion.button
               key={page.path}
@@ -42,8 +48,8 @@ function Header() {
               className={`px-5 py-2 rounded-md font-semibold text-sm uppercase tracking-wide transition-all duration-300 
             ${
               isActive
-                ? "bg-white text-black border-2  border-black shadow-[4px_4px_0px_#000000]"
-                : "bg-black text-white hover:bg-white border-2 border-purple-800 hover:text-black hover:shadow-[4px_4px_0px_#000000] hover:border-2 hover:border-black"
+                ? "bg-white text-black border-2  border-black shadow-[3px_3px_0px_#000000]"
+                : "bg-black text-white hover:bg-white border-2 border-purple-800 hover:text-black hover:shadow-[3px_3px_0px_#000000] hover:border-2 hover:border-black"
             }
           `}
             >

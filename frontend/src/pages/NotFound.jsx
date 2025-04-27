@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { FaSadTear } from "react-icons/fa"; // Sad face icon from react-icons
 
 function NotFound() {

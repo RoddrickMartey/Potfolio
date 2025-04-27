@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { OrbitProgress } from "react-loading-indicators";
 import axiosInstance from "../app/axiosConfig";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { useNavigate } from "react-router";
 
 function AboutPage() {
@@ -42,6 +42,10 @@ function AboutPage() {
       </section>
     );
 
+  if (!data) return null; // Prevent error if somehow data is still undefined
+
+  const { name, bio, skills = [] } = data; // Destructure safely with default
+
   return (
     <section className="flex items-center justify-center w-full min-h-[calc(100vh-56px)] px-4">
       <div className="flex flex-col gap-10 max-w-4xl text-center md:text-left my-20">
@@ -52,9 +56,11 @@ function AboutPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <p className="text-3xl font-bold text-white leading-relaxed tracking-wide">
+          <p className="text-3xl font-bold text-white leading-relaxed tracking-wide underline underline-offset-8 decoration-4 decoration-black">
             Hi, My name is{" "}
-            <span className="inline-block text-black">{data.name}</span> 👋
+            <span className="inline-block text-black underline underline-offset-8 decoration-4 decoration-white">
+              {name} 👋
+            </span>{" "}
           </p>
 
           {/* Tagline */}
@@ -63,13 +69,13 @@ function AboutPage() {
           </p>
 
           <p className="text-white text-lg leading-relaxed font-semibold">
-            {data.bio}
+            {bio}
           </p>
         </motion.div>
 
         {/* Skills List */}
         <ul className="flex flex-wrap justify-center md:justify-start gap-3 w-full">
-          {data.skills.map((skill, index) => (
+          {skills.map((skill, index) => (
             <motion.li
               key={index}
               initial={{ opacity: 0, x: 20 }}
@@ -102,8 +108,8 @@ function AboutPage() {
         >
           <motion.button
             whileTap={{ scale: 0.9 }}
-            onClick={() => navigate("/project")}
-            className="px-6 py-2 font-bold text-black bg-white rounded-md shadow-[3px_3px_0px_#000]"
+            onClick={() => navigate("/projects")}
+            className="px-6 py-2 font-bold text-black bg-white rounded-md shadow-[3px_3px_0px_#000] border-2  border-black"
           >
             View My Work
           </motion.button>

@@ -4,7 +4,7 @@ import { Outlet } from "react-router";
 
 function PageLayout() {
   return (
-    <main className="bg-purple-800 min-h-screen">
+    <main className="bg-purple-900 min-h-screen pb-7">
       <Header />
       <Outlet />
     </main>

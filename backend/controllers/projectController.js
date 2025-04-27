@@ -79,7 +79,11 @@ export const getProjectById = async (req, res) => {
       include: {
         techStacks: true,
         screenshots: true,
-        comments: true,
+        comments: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
 

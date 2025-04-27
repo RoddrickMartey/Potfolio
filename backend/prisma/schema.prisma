@@ -27,12 +27,12 @@ model User {
 model Project {
   id          Int         @id @default(autoincrement())
   title       String
-  description String
+  description String      @db.LongText
   category    ProjectCategory
   techStacks  TechStack[] @relation("ProjectTechStacks")
   link        String
-  screenshots Screenshot[] // One-to-many relationship with screenshots
-  comments    Comment[]    // One-to-many relationship with comments
+  screenshots Screenshot[]  // Cascade delete for related screenshots
+  comments    Comment[]        // Cascade delete for related comments
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -42,7 +42,7 @@ model Screenshot {
   id        Int      @id @default(autoincrement())
   url       String   // URL of the uploaded image
   projectId Int
-  project   Project  @relation(fields: [projectId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade) // Cascade delete
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -52,7 +52,7 @@ model Comment {
   id        Int      @id @default(autoincrement())
   content   String   @db.Text
   projectId Int
-  project   Project  @relation(fields: [projectId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade) // Cascade delete
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -72,7 +72,7 @@ model PhoneNumber {
   id        Int      @id @default(autoincrement())
   number    String      @unique
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for related phone numbers
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -82,7 +82,7 @@ model Skill {
   id        Int      @id @default(autoincrement())
   skill     String
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for related skills
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -102,7 +102,7 @@ model SocialLink {
   platform  String   // e.g., GitHub, LinkedIn
   url       String   // e.g., https://github.com/username
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for related social links
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
