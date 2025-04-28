@@ -11,6 +11,8 @@ import { FaLaptopCode } from "react-icons/fa";
 import { SiMysql, SiPrisma } from "react-icons/si";
 
 function HomePage() {
+  const profileUrl = import.meta.env.VITE_PROFILEURL;
+
   const { data, error, isPending } = useQuery({
     queryKey: ["homeData"],
     queryFn: () =>
@@ -134,7 +136,7 @@ function HomePage() {
           className="w-[300px] h-[300px] overflow-hidden flex items-center justify-center rounded-md shadow-[3px_3px_0px_#6e11b0] border-2 border-purple-800"
         >
           <img
-            src="https://res.cloudinary.com/dd4bv2upq/image/upload/v1745709972/portfolio_pic_zqq1ra.jpg"
+            src={profileUrl}
             alt="My picture"
             className="w-full h-full object-cover"
           />
