@@ -20,7 +20,7 @@ const projectSchema = Joi.object({
       "OTHER"
     )
     .required(),
-  techStacks: Joi.array()
+  techstack: Joi.array()
     .items(
       Joi.object({
         category: Joi.string()
@@ -43,7 +43,7 @@ const projectSchema = Joi.object({
     .min(1)
     .required(),
   link: Joi.string().uri().required(),
-  screenshots: Joi.array()
+  screenshot: Joi.array()
     .items(
       Joi.object({
         url: Joi.string().uri().required(),
@@ -57,14 +57,14 @@ function UpdateProjectPage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [project, setProject] = useState(null);
-  const [comments, setComment] = useState(null);
+  const [comment, setComment] = useState(null);
   const [form, setForm] = useState({
     title: "",
     description: "",
     category: "PERSONAL",
-    techStacks: [{ category: "FRONTEND", skill: "" }],
+    techstack: [{ category: "FRONTEND", skill: "" }],
     link: "",
-    screenshots: [{ url: "" }],
+    screenshot: [{ url: "" }],
   });
 
   const [errors, setErrors] = useState({});
@@ -75,56 +75,56 @@ function UpdateProjectPage() {
   };
 
   const handleStackChange = (index, key, value) => {
-    const updatedStacks = [...form.techStacks];
+    const updatedStacks = [...form.techstack];
     updatedStacks[index][key] = value;
-    setForm({ ...form, techStacks: updatedStacks });
+    setForm({ ...form, techstack: updatedStacks });
   };
 
   const handleScreenshotChange = (index, value) => {
-    const updated = [...form.screenshots];
+    const updated = [...form.screenshot];
     updated[index].url = value;
-    setForm({ ...form, screenshots: updated });
+    setForm({ ...form, screenshot: updated });
   };
 
   const addStack = () => {
     setForm((prev) => ({
       ...prev,
-      techStacks: [...prev.techStacks, { category: "FRONTEND", skill: "" }],
+      techstack: [...prev.techstack, { category: "FRONTEND", skill: "" }],
     }));
   };
 
   const addScreenshot = () => {
     setForm((prev) => ({
       ...prev,
-      screenshots: [...prev.screenshots, { url: "" }],
+      screenshot: [...prev.screenshot, { url: "" }],
     }));
   };
 
   const removeStack = (index) => {
-    const updatedStacks = form.techStacks.filter((_, i) => i !== index);
-    setForm({ ...form, techStacks: updatedStacks });
+    const updatedStacks = form.techstack.filter((_, i) => i !== index);
+    setForm({ ...form, techstack: updatedStacks });
   };
 
   const removeScreenshot = (index) => {
-    const updatedScreenshots = form.screenshots.filter((_, i) => i !== index);
-    setForm({ ...form, screenshots: updatedScreenshots });
+    const updatedScreenshots = form.screenshot.filter((_, i) => i !== index);
+    setForm({ ...form, screenshot: updatedScreenshots });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Remove unwanted fields like `id` and `createdAt` from each techStack
-    const cleanedTechStacks = form.techStacks.map(
+    const cleanedTechStacks = form.techstack.map(
       ({ id, createdAt, updatedAt, ...rest }) => rest
     );
 
-    const cleanedScreenshot = form.screenshots.map(
+    const cleanedScreenshot = form.screenshot.map(
       ({ id, createdAt, updatedAt, projectId, ...rest }) => rest
     );
     const cleanedForm = {
       ...form,
-      techStacks: cleanedTechStacks,
-      screenshots: cleanedScreenshot,
+      techstack: cleanedTechStacks,
+      screenshot: cleanedScreenshot,
     };
 
     const { error } = projectSchema.validate(cleanedForm);
@@ -141,7 +141,6 @@ function UpdateProjectPage() {
       setErrors({
         general: err?.response?.data?.message || "Submission failed",
       });
-      console.log(err.response);
     } finally {
       setSubmitting(false);
     }
@@ -152,18 +151,18 @@ function UpdateProjectPage() {
       const res = await axiosInstance.get(`/project/${id}`);
       const project = res.data;
       setProject(project);
-      setComment(project.comments);
+      setComment(project.comment);
       // Prepopulate the form with project data
       setForm({
         title: project.title,
         description: project.description,
         category: project.category,
-        techStacks: project.techStacks,
+        techstack: project.techstack,
         link: project.link,
-        screenshots: project.screenshots,
+        screenshot: project.screenshot,
       });
     } catch (error) {
-      console.log(error.response);
+      console.error(error.response);
     }
   };
 
@@ -211,7 +210,7 @@ function UpdateProjectPage() {
 
           <div>
             <h4 className="font-semibold">Tech Stacks</h4>
-            {form.techStacks.map((stack, index) => (
+            {form.techstack.map((stack, index) => (
               <div key={index} className="flex gap-2 mb-2">
                 <select
                   value={stack.category}
@@ -266,7 +265,7 @@ function UpdateProjectPage() {
 
           <div>
             <h4 className="font-semibold">Screenshots</h4>
-            {form.screenshots.map((shot, index) => (
+            {form.screenshot.map((shot, index) => (
               <div key={index} className="flex gap-2 mb-2">
                 <input
                   key={index}
@@ -314,8 +313,8 @@ function UpdateProjectPage() {
         </form>
       </section>
       <section>
-        {comments !== null && (
-          <ProjectComments comments={comments} fetchProject={fetchProject} />
+        {comment !== null && (
+          <ProjectComments comments={comment} fetchProject={fetchProject} />
         )}
       </section>
     </section>

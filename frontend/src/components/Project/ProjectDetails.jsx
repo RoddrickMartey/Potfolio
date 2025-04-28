@@ -27,7 +27,6 @@ function ProjectDetails() {
     queryKey: ["projectData"],
     queryFn: () =>
       axiosInstance.get(`/project/${id}`).then((res) => {
-        console.log(res.data); // you can keep this for checking
         return res.data; // <-- THIS IS THE IMPORTANT PART
       }),
   });
@@ -52,9 +51,9 @@ function ProjectDetails() {
       setCategory(data.category);
       setLink(data.link);
       setUpdatedAt(data.updatedAt);
-      setTechStacks(data.techStacks);
-      setScreenshots(data.screenshots);
-      setComments(data.comments);
+      setTechStacks(data.techstack);
+      setScreenshots(data.screenshot);
+      setComments(data.comment);
     }
   }, [data]);
 
@@ -72,8 +71,6 @@ function ProjectDetails() {
     techStacks.length > 0;
 
   if (!isDataReady) {
-    console.log("waiting");
-
     return (
       <section className="h-96 w-full flex items-center justify-center">
         <OrbitProgress

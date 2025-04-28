@@ -13,7 +13,7 @@ function SkillItem({ skill, fetchUser }) {
     try {
       setLoading(true);
       const res = await axiosInstance.delete(`/deleteSkill/${skill.id}`);
-      console.log("Deleted skill:", res.data);
+
       fetchUser(); // Refresh the list
     } catch (error) {
       console.error("Delete failed:", error.response?.data || error.message);
@@ -30,7 +30,7 @@ function SkillItem({ skill, fetchUser }) {
       const res = await axiosInstance.patch(`/updateSkill/${skill.id}`, {
         skill: editedSkill,
       });
-      console.log("Updated skill:", res.data);
+
       setIsEditing(false);
       fetchUser(); // Refresh the list
     } catch (error) {

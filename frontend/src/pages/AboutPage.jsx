@@ -13,7 +13,6 @@ function AboutPage() {
     queryKey: ["aboutData"],
     queryFn: () =>
       axiosInstance.get("/about").then((res) => {
-        console.log(res.data);
         return res.data;
       }),
   });
@@ -44,7 +43,7 @@ function AboutPage() {
 
   if (!data) return null; // Prevent error if somehow data is still undefined
 
-  const { name, bio, skills = [] } = data; // Destructure safely with default
+  const { name, bio, skill = [] } = data; // Destructure safely with default
 
   return (
     <section className="flex items-center justify-center w-full min-h-[calc(100vh-56px)] px-4">
@@ -75,7 +74,7 @@ function AboutPage() {
 
         {/* Skills List */}
         <ul className="flex flex-wrap justify-center md:justify-start gap-3 w-full">
-          {skills.map((skill, index) => (
+          {skill.map((skill, index) => (
             <motion.li
               key={index}
               initial={{ opacity: 0, x: 20 }}

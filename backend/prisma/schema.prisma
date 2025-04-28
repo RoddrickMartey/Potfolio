@@ -7,116 +7,116 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Define the data model for the User
-model User {
-  id          Int      @id @default(autoincrement())
-  name        String
-  username    String
-  password    String
-  email       String   @unique
-  phoneNumbers PhoneNumber[]  // One-to-many relationship with PhoneNumber
-  skills      Skill[]         // One-to-many relationship with Skill
-  resume      String
-  bio         String  @db.Text
-  socialLinks SocialLink[] // One-to-many for social media links
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-// Define the data model for the Project
-model Project {
-  id          Int         @id @default(autoincrement())
-  title       String
-  description String      @db.LongText
-  category    ProjectCategory
-  techStacks  TechStack[] @relation("ProjectTechStacks")
-  link        String
-  screenshots Screenshot[]  // Cascade delete for related screenshots
-  comments    Comment[]        // Cascade delete for related comments
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-}
-
-// Define the data model for the Screenshot
-model Screenshot {
-  id        Int      @id @default(autoincrement())
-  url       String   // URL of the uploaded image
-  projectId Int
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade) // Cascade delete
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-// Define the data model for the Comment
-model Comment {
+model comment {
   id        Int      @id @default(autoincrement())
   content   String   @db.Text
   projectId Int
-  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade) // Cascade delete
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  project   project  @relation(fields: [projectId], references: [id], onDelete: Cascade, map: "Comment_projectId_fkey")
+
+  @@index([projectId], map: "Comment_projectId_fkey")
 }
 
-// Define the data model for the TechStack
-model TechStack {
-  id        Int        @id @default(autoincrement())
-  category  TechCategory     // The category like "Frontend", "Backend", "Office Skills"
-  skill     String     // The actual skill or technology name like "React", "Express", "PowerPoint"
-  projects  Project[]  @relation("ProjectTechStacks")
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model downloadlog {
+  id           Int      @id @default(autoincrement())
+  fileUrl      String
+  ipAddress    String
+  userAgent    String
+  downloadedAt DateTime @default(now())
 }
 
-// Define the data model for the PhoneNumber
-model PhoneNumber {
+model phonenumber {
   id        Int      @id @default(autoincrement())
-  number    String      @unique
+  number    String   @unique(map: "PhoneNumber_number_key")
   userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for related phone numbers
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "PhoneNumber_userId_fkey")
+
+  @@index([userId], map: "PhoneNumber_userId_fkey")
 }
 
-// Define the data model for the Skill
-model Skill {
+model project {
+  id          Int              @id @default(autoincrement())
+  title       String
+  description String           @db.LongText
+  category    project_category
+  link        String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime
+  comment     comment[]
+  screenshot  screenshot[]
+  techstack   techstack[]      @relation("projecttechstacks")
+}
+
+model screenshot {
+  id        Int      @id @default(autoincrement())
+  url       String
+  projectId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
+  project   project  @relation(fields: [projectId], references: [id], onDelete: Cascade, map: "Screenshot_projectId_fkey")
+
+  @@index([projectId], map: "Screenshot_projectId_fkey")
+}
+
+model skill {
   id        Int      @id @default(autoincrement())
   skill     String
   userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for related skills
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "Skill_userId_fkey")
+
+  @@index([userId], map: "Skill_userId_fkey")
 }
 
-// Define the data model for the Visitor
-model Visitor {
-  id         Int      @id @default(autoincrement())
-  token      String   @unique  // JWT token to track unique visits
-  userAgent  String   // Store the user agent (browser info)
-  ipAddress  String   // Store the IP address of the visitor
-  visitDate  DateTime @default(now()) // The date of the visit
-}
-
-// Define the data model for the SocialLink
-model SocialLink {
+model sociallink {
   id        Int      @id @default(autoincrement())
-  platform  String   // e.g., GitHub, LinkedIn
-  url       String   // e.g., https://github.com/username
+  platform  String
+  url       String
   userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade) // Cascade delete for related social links
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime  @updatedAt
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade, map: "SocialLink_userId_fkey")
+
+  @@index([userId], map: "SocialLink_userId_fkey")
 }
 
-// Define the data model for the DownloadLog
-model DownloadLog {
-  id            Int      @id @default(autoincrement())
-  fileUrl       String   // the file that was downloaded
-  ipAddress     String
-  userAgent     String
-  downloadedAt  DateTime @default(now())
+model techstack {
+  id        Int                @id @default(autoincrement())
+  category  techstack_category
+  skill     String
+  createdAt DateTime           @default(now())
+  updatedAt DateTime            @updatedAt
+  project   project[]          @relation("projecttechstacks")
 }
 
-enum TechCategory {
+model user {
+  id          Int           @id @default(autoincrement())
+  name        String
+  username    String
+  password    String
+  email       String        @unique(map: "User_email_key")
+  resume      String
+  bio         String        @db.Text
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  phonenumber phonenumber[]
+  skill       skill[]
+  sociallink  sociallink[]
+}
+
+model visitor {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique(map: "Visitor_token_key")
+  userAgent String
+  ipAddress String
+  visitDate DateTime @default(now())
+}
+
+enum techstack_category {
   FRONTEND
   BACKEND
   DATABASE
@@ -129,7 +129,7 @@ enum TechCategory {
   OTHER
 }
 
-enum ProjectCategory {
+enum project_category {
   PERSONAL
   CLIENT
   SCHOOL
@@ -139,4 +139,3 @@ enum ProjectCategory {
   FREELANCE
   OTHER
 }
-

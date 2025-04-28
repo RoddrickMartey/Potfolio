@@ -6,9 +6,12 @@ import visitorRouter from "./routes/visitorRoute.js";
 
 const app = express();
 
+const VISITORURL = process.env.VISITORURL;
+const ADMINURL = process.env.ADMINURL;
+
 // CORS configuration
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://localhost:3000"], // Your frontend URL
+  origin: [VISITORURL, ADMINURL], // Your frontend URL
   credentials: true, // Allow cookies to be sent with the request
 };
 
@@ -29,5 +32,7 @@ app.get("/api", (req, res) => {
 // Set the server to listen on port 5000 (or use the environment port)
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  if (process.env.NODE_ENV === "development") {
+    console.log(`Server is running on port ${port}`);
+  }
 });

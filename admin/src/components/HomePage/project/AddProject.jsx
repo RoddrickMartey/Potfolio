@@ -17,7 +17,7 @@ const projectSchema = Joi.object({
       "OTHER"
     )
     .required(),
-  techStacks: Joi.array()
+  techstack: Joi.array()
     .items(
       Joi.object({
         category: Joi.string()
@@ -40,7 +40,7 @@ const projectSchema = Joi.object({
     .min(1)
     .required(),
   link: Joi.string().uri().required(),
-  screenshots: Joi.array()
+  screenshot: Joi.array()
     .items(
       Joi.object({
         url: Joi.string().uri().required(),
@@ -55,9 +55,9 @@ function AddProject({ changePage }) {
     title: "",
     description: "",
     category: "PERSONAL",
-    techStacks: [{ category: "FRONTEND", skill: "" }],
+    techstack: [{ category: "FRONTEND", skill: "" }],
     link: "",
-    screenshots: [{ url: "" }],
+    screenshot: [{ url: "" }],
   });
 
   const [errors, setErrors] = useState({});
@@ -68,28 +68,28 @@ function AddProject({ changePage }) {
   };
 
   const handleStackChange = (index, key, value) => {
-    const updatedStacks = [...form.techStacks];
+    const updatedStacks = [...form.techstack];
     updatedStacks[index][key] = value;
-    setForm({ ...form, techStacks: updatedStacks });
+    setForm({ ...form, techstack: updatedStacks });
   };
 
   const handleScreenshotChange = (index, value) => {
-    const updated = [...form.screenshots];
+    const updated = [...form.screenshot];
     updated[index].url = value;
-    setForm({ ...form, screenshots: updated });
+    setForm({ ...form, screenshot: updated });
   };
 
   const addStack = () => {
     setForm((prev) => ({
       ...prev,
-      techStacks: [...prev.techStacks, { category: "FRONTEND", skill: "" }],
+      techstack: [...prev.techstack, { category: "FRONTEND", skill: "" }],
     }));
   };
 
   const addScreenshot = () => {
     setForm((prev) => ({
       ...prev,
-      screenshots: [...prev.screenshots, { url: "" }],
+      screenshot: [...prev.screenshot, { url: "" }],
     }));
   };
 
@@ -153,7 +153,7 @@ function AddProject({ changePage }) {
 
         <div>
           <h4 className="font-semibold">Tech Stacks</h4>
-          {form.techStacks.map((stack, index) => (
+          {form.techstack.map((stack, index) => (
             <div key={index} className="flex gap-2 mb-2">
               <select
                 value={stack.category}
@@ -201,7 +201,7 @@ function AddProject({ changePage }) {
 
         <div>
           <h4 className="font-semibold">Screenshots</h4>
-          {form.screenshots.map((shot, index) => (
+          {form.screenshot.map((shot, index) => (
             <input
               key={index}
               placeholder="Screenshot URL"

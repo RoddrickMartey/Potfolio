@@ -12,7 +12,7 @@ export const createProject = async (req, res) => {
     return res.status(400).json({ errors: messages });
   }
 
-  const { title, description, category, techStacks, link, screenshots } = value;
+  const { title, description, category, techstack, link, screenshot } = value;
 
   try {
     const newProject = await prisma.project.create({
@@ -21,21 +21,21 @@ export const createProject = async (req, res) => {
         description,
         category,
         link,
-        techStacks: {
-          create: techStacks.map((tech) => ({
+        techstack: {
+          create: techstack.map((tech) => ({
             category: tech.category,
             skill: tech.skill,
           })),
         },
-        screenshots: {
-          create: screenshots.map((screenshot) => ({
+        screenshot: {
+          create: screenshot.map((screenshot) => ({
             url: screenshot.url,
           })),
         },
       },
       include: {
-        techStacks: true,
-        screenshots: true,
+        techstack: true,
+        screenshot: true,
       },
     });
 
@@ -53,9 +53,9 @@ export const getAllProjects = async (req, res) => {
   try {
     const projects = await prisma.project.findMany({
       include: {
-        screenshots: true,
+        screenshot: true,
         _count: {
-          select: { comments: true },
+          select: { comment: true },
         },
       },
       orderBy: {
@@ -77,9 +77,9 @@ export const getProjectById = async (req, res) => {
     const project = await prisma.project.findUnique({
       where: { id: parseInt(id) },
       include: {
-        techStacks: true,
-        screenshots: true,
-        comments: {
+        techstack: true,
+        screenshot: true,
+        comment: {
           orderBy: {
             createdAt: "desc",
           },
@@ -111,7 +111,7 @@ export const updateProject = async (req, res) => {
     return res.status(400).json({ errors: messages });
   }
 
-  const { title, description, category, techStacks, link, screenshots } = value;
+  const { title, description, category, techstack, link, screenshot } = value;
 
   try {
     const project = await prisma.project.findUnique({
@@ -123,8 +123,8 @@ export const updateProject = async (req, res) => {
     }
 
     // Delete old techStacks and screenshots (for full replace)
-    await prisma.techStack.deleteMany({
-      where: { projects: { some: { id: parseInt(id) } } },
+    await prisma.techstack.deleteMany({
+      where: { project: { some: { id: parseInt(id) } } }, // Match the project ID in techstack deletion
     });
     await prisma.screenshot.deleteMany({ where: { projectId: parseInt(id) } });
 
@@ -135,21 +135,21 @@ export const updateProject = async (req, res) => {
         description,
         category,
         link,
-        techStacks: {
-          create: techStacks.map((tech) => ({
+        techstack: {
+          create: techstack.map((tech) => ({
             category: tech.category,
             skill: tech.skill,
           })),
         },
-        screenshots: {
-          create: screenshots.map((screenshot) => ({
+        screenshot: {
+          create: screenshot.map((screenshot) => ({
             url: screenshot.url,
           })),
         },
       },
       include: {
-        techStacks: true,
-        screenshots: true,
+        techstack: true,
+        screenshot: true,
       },
     });
 

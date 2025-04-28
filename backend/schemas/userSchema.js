@@ -53,7 +53,7 @@ export const projectCreateSchema = Joi.object({
       "OTHER"
     )
     .required(),
-  techStacks: Joi.array()
+  techstack: Joi.array()
     .items(
       Joi.object({
         category: Joi.string()
@@ -76,7 +76,7 @@ export const projectCreateSchema = Joi.object({
     .min(1)
     .required(),
   link: Joi.string().uri().required(),
-  screenshots: Joi.array()
+  screenshot: Joi.array()
     .items(
       Joi.object({
         url: Joi.string().uri().required(),

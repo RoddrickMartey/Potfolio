@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 function ProjectsItem({ project }) {
   const [currentIndex, setCurrentIndex] = useState(0); // Track the current image index
-  const totalScreenshots = project.screenshots.length;
+  const totalScreenshots = project.screenshot.length;
 
   // Function to go to the next image
   const nextImage = () => {
@@ -34,8 +34,8 @@ function ProjectsItem({ project }) {
           )}
 
           <img
-            src={project.screenshots[currentIndex].url}
-            alt={`Screenshot ${project.screenshots[currentIndex].id}`}
+            src={project.screenshot[currentIndex].url}
+            alt={`Screenshot ${project.screenshot[currentIndex].id}`}
             className="w-64 h-40 object-cover rounded-md mx-auto"
           />
 

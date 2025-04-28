@@ -10,7 +10,6 @@ function ProjectDisplay({ changePage }) {
       try {
         const res = await axiosInstance.get("/projects");
         setProjects(res.data);
-        console.log(res.data);
       } catch (error) {
         console.error("Error fetching projects:", error.response);
       }

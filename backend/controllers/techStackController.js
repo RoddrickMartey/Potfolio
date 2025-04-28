@@ -14,7 +14,7 @@ export const addTechStack = async (req, res) => {
   }
 
   try {
-    const newTechStack = await prisma.techStack.create({
+    const newTechStack = await prisma.techstack.create({
       data: {
         category: value.category,
         skill: value.skill,
@@ -44,7 +44,7 @@ export const updateTechStack = async (req, res) => {
   }
 
   try {
-    const updatedTechStack = await prisma.techStack.update({
+    const updatedTechStack = await prisma.techstack.update({
       where: { id: Number(techStackId) },
       data: { category: value.category, skill: value.skill },
     });
@@ -63,7 +63,7 @@ export const deleteTechStack = async (req, res) => {
   const { techStackId } = req.params;
 
   try {
-    const deletedTechStack = await prisma.techStack.delete({
+    const deletedTechStack = await prisma.techstack.delete({
       where: { id: Number(techStackId) },
     });
 

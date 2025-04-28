@@ -11,10 +11,9 @@ function HomePage() {
     try {
       const res = await axiosInstance.get("/me");
       setUser(res.data); // fixed this line
-      setPhoneNumbers(res.data.phoneNumbers);
-      setSocialLinks(res.data.socialLinks);
-      setSkills(res.data.skills);
-      console.log(res.data);
+      setPhoneNumbers(res.data.phonenumber);
+      setSocialLinks(res.data.sociallink);
+      setSkills(res.data.skill);
     } catch (error) {
       console.error("Error fetching user:", error.response);
     }

@@ -62,8 +62,8 @@ function ContactPage() {
           <div>
             <h2 className="text-xl font-semibold mb-2">Phone Numbers</h2>
             <div className="space-y-2">
-              {data.phoneNumbers?.length > 0 ? (
-                data.phoneNumbers.map((phoneNumber, index) => (
+              {data.phonenumber?.length > 0 ? (
+                data.phonenumber.map((phoneNumber, index) => (
                   <a
                     key={index}
                     href={`tel:${phoneNumber.number}`}
@@ -82,8 +82,8 @@ function ContactPage() {
           <div>
             <h2 className="text-xl font-semibold mb-4">Social Links</h2>
             <div className="grid grid-cols-4 gap-4">
-              {data.socialLinks?.length > 0 ? (
-                data.socialLinks.map((link, index) => (
+              {data.sociallink?.length > 0 ? (
+                data.sociallink.map((link, index) => (
                   <a
                     key={index}
                     href={link.url}

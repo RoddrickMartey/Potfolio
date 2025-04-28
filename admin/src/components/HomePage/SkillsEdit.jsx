@@ -31,7 +31,6 @@ function SkillsEdit({ fetchUser, skills }) {
 
     try {
       // Log the skill before submitting for debugging
-      console.log("Submitting Skill:", { newSkill });
 
       // Assuming the API endpoint is correct
       const response = await axiosInstance.post("/addSkill", {
@@ -40,7 +39,6 @@ function SkillsEdit({ fetchUser, skills }) {
 
       fetchUser();
       setNewSkill("");
-      console.log("Skill added successfully:", response.data);
     } catch (err) {
       console.error("Error submitting skill:", err);
       setErrors({ apiError: "Something went wrong, please try again later." });

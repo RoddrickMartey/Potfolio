@@ -11,7 +11,6 @@ function ProjectsPage() {
     queryKey: ["projectData"],
     queryFn: () =>
       axiosInstance.get("/projects").then((res) => {
-        console.log(res.data); // you can keep this for checking
         return res.data; // <-- THIS IS THE IMPORTANT PART
       }),
   });

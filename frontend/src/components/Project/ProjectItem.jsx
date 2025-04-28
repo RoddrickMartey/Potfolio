@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 
 function ProjectItem({ project, delayTime }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const totalScreenshots = project.screenshots.length;
+  const totalScreenshots = project.screenshot.length;
 
   const navigate = useNavigate();
 
@@ -54,8 +54,8 @@ function ProjectItem({ project, delayTime }) {
           )}
 
           <img
-            src={project.screenshots[currentIndex].url}
-            alt={`Screenshot ${project.screenshots[currentIndex].id}`}
+            src={project.screenshot[currentIndex].url}
+            alt={`Screenshot ${project.screenshot[currentIndex].id}`}
             className="w-68 h-40 object-cover rounded-md mx-auto"
           />
 
@@ -80,7 +80,7 @@ function ProjectItem({ project, delayTime }) {
           Last updated: {formattedDate}
         </p>
         <p className="text-black ">
-          Has {project._count.comments} reviews so far
+          Has {project._count.comment} reviews so far
         </p>
         <a
           href={project.link}

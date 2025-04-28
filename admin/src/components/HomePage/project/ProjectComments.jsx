@@ -3,11 +3,8 @@ import { FaTrash } from "react-icons/fa"; // Importing the delete icon from reac
 import axiosInstance from "../../../app/axiosConfig";
 
 function ProjectComments({ comments, fetchProject }) {
-  console.log(comments);
-
   // Placeholder function for delete action
   const handleDelete = async (commentId) => {
-    console.log(`Delete comment with ID: ${commentId}`);
     await axiosInstance.delete(`/deleteComment/${commentId}`);
     fetchProject();
     // You can implement the actual delete logic here

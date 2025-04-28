@@ -1,9 +1,10 @@
 import { socialLinkSchema } from "../schemas/userSchema.js";
 import { prisma } from "../utils/prisma.js";
 
+// Add a social link
 export const addSocialLink = async (req, res) => {
   const socialLink = req.body;
-  const userId = req.userId; // assuming the userId is coming from the token
+  const userId = req.userId;
 
   const { error, value } = socialLinkSchema.validate(socialLink, {
     abortEarly: true,
@@ -11,31 +12,42 @@ export const addSocialLink = async (req, res) => {
 
   if (error) {
     const messages = error.details.map((err) => err.message);
-    return res.status(400).json({ errors: messages });
+    return res
+      .status(400)
+      .json({ error: `Invalid social link data: ${messages.join(", ")}` });
   }
 
   try {
+    // Check if the social link already exists for this user
+    const existingLink = await prisma.sociallink.findFirst({
+      where: { userId, platform: value.platform }, // Prevent duplicate social links per user
+    });
+
+    if (existingLink) {
+      return res
+        .status(400)
+        .json({ error: `Social link for ${value.platform} already exists` });
+    }
+
     // Create the new social link with the userId
-    const newSocialLink = await prisma.socialLink.create({
-      data: {
-        ...value, // Spread the validated values
-        userId, // Add the userId from the token
-      },
+    const newSocialLink = await prisma.sociallink.create({
+      data: { ...value, userId },
     });
 
     return res.status(201).json(newSocialLink); // Return the newly created social link
   } catch (error) {
-    console.error(error); // Use 'error' to match the variable name
+    console.error(error);
     return res
       .status(500)
-      .json({ error: "Something went wrong. Server Error" });
+      .json({ error: "Something went wrong. Please try again later." });
   }
 };
 
+// Update a social link
 export const updateSocialLink = async (req, res) => {
-  const { id } = req.params; // ID of the social link to update
-  const socialLink = req.body; // Data to update the social link
-  const userId = req.userId; // Get userId from the token
+  const { id } = req.params;
+  const socialLink = req.body;
+  const userId = req.userId;
 
   const { error, value } = socialLinkSchema.validate(socialLink, {
     abortEarly: true,
@@ -43,13 +55,14 @@ export const updateSocialLink = async (req, res) => {
 
   if (error) {
     const messages = error.details.map((err) => err.message);
-    return res.status(400).json({ errors: messages });
+    return res
+      .status(400)
+      .json({ error: `Invalid social link data: ${messages.join(", ")}` });
   }
 
   try {
-    // Check if the social link exists and belongs to the user
-    const existingSocialLink = await prisma.socialLink.findUnique({
-      where: { id: parseInt(id) },
+    const existingSocialLink = await prisma.sociallink.findUnique({
+      where: { id: Number(id) }, // Cast ID to number here
     });
 
     if (!existingSocialLink) {
@@ -62,12 +75,9 @@ export const updateSocialLink = async (req, res) => {
         .json({ error: "You are not authorized to update this social link" });
     }
 
-    // Update the social link
-    const updatedSocialLink = await prisma.socialLink.update({
-      where: { id: parseInt(id) },
-      data: {
-        ...value, // Spread the validated values
-      },
+    const updatedSocialLink = await prisma.sociallink.update({
+      where: { id: Number(id) }, // Cast ID to number here
+      data: { ...value },
     });
 
     return res.status(200).json(updatedSocialLink);
@@ -75,18 +85,18 @@ export const updateSocialLink = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Something went wrong. Server Error" });
+      .json({ error: "Something went wrong. Please try again later." });
   }
 };
 
+// Delete a social link
 export const deleteSocialLink = async (req, res) => {
-  const { id } = req.params; // ID of the social link to delete
-  const userId = req.userId; // Get userId from the token
+  const { id } = req.params;
+  const userId = req.userId;
 
   try {
-    // Check if the social link exists and belongs to the user
-    const existingSocialLink = await prisma.socialLink.findUnique({
-      where: { id: parseInt(id) },
+    const existingSocialLink = await prisma.sociallink.findUnique({
+      where: { id: Number(id) }, // Cast ID to number here
     });
 
     if (!existingSocialLink) {
@@ -99,9 +109,8 @@ export const deleteSocialLink = async (req, res) => {
         .json({ error: "You are not authorized to delete this social link" });
     }
 
-    // Delete the social link
-    await prisma.socialLink.delete({
-      where: { id: parseInt(id) },
+    await prisma.sociallink.delete({
+      where: { id: Number(id) }, // Cast ID to number here
     });
 
     return res
@@ -111,24 +120,24 @@ export const deleteSocialLink = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Something went wrong. Server Error" });
+      .json({ error: "Something went wrong. Please try again later." });
   }
 };
 
+// Get all social links
 export const getAllSocialLinks = async (req, res) => {
-  const userId = req.userId; // Get userId from the token
+  const userId = req.userId;
 
   try {
-    // Get all social links that belong to the authenticated user
-    const socialLinks = await prisma.socialLink.findMany({
-      where: { userId: userId }, // Filter by userId
+    const socialLinks = await prisma.sociallink.findMany({
+      where: { userId },
       select: {
         id: true,
         platform: true,
         url: true,
         createdAt: true,
         updatedAt: true,
-      }, // Select the fields you want to return
+      },
     });
 
     return res.status(200).json(socialLinks);
@@ -136,6 +145,6 @@ export const getAllSocialLinks = async (req, res) => {
     console.error(error);
     return res
       .status(500)
-      .json({ error: "Something went wrong. Server Error" });
+      .json({ error: "Something went wrong. Please try again later." });
   }
 };

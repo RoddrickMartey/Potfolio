@@ -37,16 +37,15 @@ function LoginPage() {
       setErrors(newErrors); // Update state with validation errors
     } else {
       // If no errors, proceed with the form submission (e.g., API call)
-      console.log("Form submitted");
     }
     const formadata = { username, password };
     try {
       const res = await axiosInstance.post("/login", formadata);
-      console.log(res.data);
+
       dispatch(loginSuccess());
       navigate("/userInfo");
     } catch (error) {
-      console.log(error.response);
+      console.error(error.response);
     }
   };
 

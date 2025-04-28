@@ -17,7 +17,8 @@ export const logDownload = async (req, res) => {
   }
 
   try {
-    const newDownloadLog = await prisma.downloadLog.create({
+    const newDownloadLog = await prisma.downloadlog.create({
+      // Adjusted to match Prisma model case
       data: {
         fileUrl: value.fileUrl,
         ipAddress: value.ipAddress,
@@ -25,7 +26,8 @@ export const logDownload = async (req, res) => {
       },
     });
 
-    return res.status(201);
+    // Respond with the newly created log entry
+    return res.status(201).json(newDownloadLog); // Send the log entry in the response
   } catch (err) {
     console.error(err);
     return res

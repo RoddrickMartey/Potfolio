@@ -7,9 +7,9 @@ import PhoneEdit from "../components/HomePage/PhoneEdit";
 
 function UpdateUserPage() {
   const [user, setUser] = useState(null);
-  const [phoneNumbers, setPhoneNumbers] = useState([]);
-  const [socialLinks, setSocialLinks] = useState([]);
-  const [skills, setSkills] = useState([]);
+  const [phonenumber, setPhoneNumbers] = useState([]);
+  const [sociallink, setSocialLinks] = useState([]);
+  const [skill, setSkills] = useState([]);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,9 +31,9 @@ function UpdateUserPage() {
       setLoadingUserData(true);
       const res = await axiosInstance.get("/me");
       setUser(res.data);
-      setPhoneNumbers(res.data.phoneNumbers);
-      setSocialLinks(res.data.socialLinks);
-      setSkills(res.data.skills);
+      setPhoneNumbers(res.data.phonenumber);
+      setSocialLinks(res.data.sociallink);
+      setSkills(res.data.skill);
       setName(res.data.name);
       setEmail(res.data.email);
       setBio(res.data.bio);
@@ -145,9 +145,9 @@ function UpdateUserPage() {
         </button>
       </form>
 
-      <SkillsEdit skills={skills} fetchUser={fetchUser} />
-      <SocialLinkEdit socialLinks={socialLinks} fetchUser={fetchUser} />
-      <PhoneEdit phoneNumbers={phoneNumbers} fetchUser={fetchUser} />
+      <SkillsEdit skills={skill} fetchUser={fetchUser} />
+      <SocialLinkEdit socialLinks={sociallink} fetchUser={fetchUser} />
+      <PhoneEdit phoneNumbers={phonenumber} fetchUser={fetchUser} />
     </section>
   );
 }

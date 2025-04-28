@@ -1,6 +1,7 @@
 import { prisma } from "../utils/prisma.js";
 import { phoneNumberSchema } from "../schemas/userSchema.js";
 
+// Add phone number
 export const addPhoneNumber = async (req, res) => {
   const phoneNumber = req.body;
   const userId = req.userId;
@@ -15,7 +16,8 @@ export const addPhoneNumber = async (req, res) => {
   }
 
   try {
-    const newPhoneNumber = await prisma.phoneNumber.create({
+    const newPhoneNumber = await prisma.phonenumber.create({
+      // Model name is phonenumber (not phoneNumber)
       data: {
         ...value,
         userId,
@@ -36,6 +38,7 @@ export const addPhoneNumber = async (req, res) => {
   }
 };
 
+// Update phone number
 export const updatePhoneNumber = async (req, res) => {
   const phoneNumberId = parseInt(req.params.id);
   const userId = req.userId;
@@ -51,7 +54,8 @@ export const updatePhoneNumber = async (req, res) => {
   }
 
   try {
-    const phoneNumber = await prisma.phoneNumber.findUnique({
+    const phoneNumber = await prisma.phonenumber.findUnique({
+      // Model name is phonenumber (not phoneNumber)
       where: { id: phoneNumberId },
     });
 
@@ -59,7 +63,7 @@ export const updatePhoneNumber = async (req, res) => {
       return res.status(404).json({ error: "Phone number not found" });
     }
 
-    const updatedPhoneNumber = await prisma.phoneNumber.update({
+    const updatedPhoneNumber = await prisma.phonenumber.update({
       where: { id: phoneNumberId },
       data: value,
       select: {
@@ -76,12 +80,14 @@ export const updatePhoneNumber = async (req, res) => {
   }
 };
 
+// Delete phone number
 export const deletePhoneNumber = async (req, res) => {
   const phoneNumberId = parseInt(req.params.id);
   const userId = req.userId;
 
   try {
-    const phoneNumber = await prisma.phoneNumber.findUnique({
+    const phoneNumber = await prisma.phonenumber.findUnique({
+      // Model name is phonenumber (not phoneNumber)
       where: { id: phoneNumberId },
     });
 
@@ -89,7 +95,7 @@ export const deletePhoneNumber = async (req, res) => {
       return res.status(404).json({ error: "Phone number not found" });
     }
 
-    await prisma.phoneNumber.delete({
+    await prisma.phonenumber.delete({
       where: { id: phoneNumberId },
     });
 

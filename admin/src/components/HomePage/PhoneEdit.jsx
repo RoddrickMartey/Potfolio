@@ -34,7 +34,7 @@ function PhoneEdit({ fetchUser, phoneNumbers }) {
       const res = await axiosInstance.post("/addPhoneNumber", {
         number: newNumber,
       });
-      console.log("Phone number added:", res.data);
+
       setNewNumber("");
       fetchUser();
     } catch (err) {

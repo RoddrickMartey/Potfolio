@@ -13,6 +13,15 @@ export const addScreenshot = async (req, res) => {
     return res.status(400).json({ errors: messages });
   }
 
+  // Optionally, check if the project exists before adding the screenshot
+  const project = await prisma.project.findUnique({
+    where: { id: Number(projectId) },
+  });
+
+  if (!project) {
+    return res.status(404).json({ error: "Project not found" });
+  }
+
   try {
     const newScreenshot = await prisma.screenshot.create({
       data: {
